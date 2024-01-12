@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <title>Super Troco & NRF</title>
+        <link href="./styles/main.css" rel="stylesheet" type="text/css">
+        <script src="https://kit.fontawesome.com/a6e42c52bf.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    
+        <script>
+            function aplicarMascaraCPF() {
+                $('#cpfInput').inputmask('999.999.999-99', { reverse: true });
+            }
+        
+            aplicarMascaraCPF();
+            document.addEventListener('DOMContentLoaded', aplicarMascaraCPF);
+        
+            function validarCPF(cpf) {
+                const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+                return cpfRegex.test(cpf);
+            }
+        
+            const apiUrl = 'https://apihomolog.supertroco.com.br/v1/voucher';
+        
+            function cadastrarUsuario() {
+                const cpfInput = document.getElementById('cpfInput').value;
+                const codigoInput = document.getElementById('codigoInput').value;
+                obterDadosDaAPI(cpfInput, codigoInput);
+            }
+        
+            async function obterDadosDaAPI(cpf, codigo) {
+                const request = {
+                    code: codigo,
+                    document: cpf,
+                };
+        
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(request)
+                    });
+        
+                    const data = await response.json();
+                    console.log(response);
+                    console.log(data);
+        
+                    if (response.status === 200) {
+                        alert('Sucesso: ' + data.message);
+                    } else if (response.status === 400 || response.status === 404) {
+                        alert('Erro: ' + data.message);
+                    } else {
+                        alert('Resposta inesperada da API');
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar os dados para a API:', error);
+                    alert('Erro ao enviar os dados para a API');
+                }
+                window.location.href = 'https://supertroco.com.br/cadastro/steps/cpf';
+            }
+        
+            function trocarImagemBanner() {
+                const screenWidth = window.innerWidth;
+        
+                if (screenWidth < 768) {
+                    document.getElementById('bannerImage').src = './img/hummobile.jpg';
+                } else {
+                    document.getElementById('bannerImage').src = './img/hum.jpg';
+                }
+        
+                if (screenWidth < 768) {
+                    document.getElementById('bannerImagedois').src = './img/doismobile.jpg';
+                } else {
+                    document.getElementById('bannerImagedois').src = './img/dois.jpg';
+                }
+        
+                if (screenWidth < 768) {
+                    document.getElementById('bannerImagetres').src = './img/tresmobile.png';
+                } else {
+                    document.getElementById('bannerImagetres').src = './img/tres.jpg';
+                }
+                
+                if (screenWidth < 768) {
+                    document.getElementById('bannerImagequatro').src = './img/quatromobile.jpg';
+                } else {
+                    document.getElementById('bannerImagequatro').src = './img/quatro.jpg';
+                }
+            }
+            //configura o tamanho da tela automaticamente
+            window.onload = trocarImagemBanner;
+            window.onresize = trocarImagemBanner;
+
+        </script>    
+    </head>
+        <body>
+            <div class="container-fluid">
+                <div class="row mt-4 text-center flex-wrap">
+                    <div class="col"><a href="https://www.supertroco.com.br"><img class="w-50 marca" src="./img/st.png"></a></div>
+                    <div class="col"><a href="https://nrfbigshow.nrf.com/"><img class="w-25 marcadois" src="./img/nrf-2024-logo.png"></a></div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 px-0">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img id="bannerImage" src="./img/hum.jpg" class="d-block w-100" alt="Banners com os Big Numbers da Supertroco">
+                            </div>
+                            <div class="carousel-item">
+                                <img id="bannerImagedois"  src="./img/dois.jpg" class="d-block w-100" alt="Banners com os Big Numbers da Supertroco">
+                            </div>
+                            <div class="carousel-item">
+                                <img id="bannerImagetres"  src="./img/tres.jpg" class="d-block w-100" alt="Banners com os Big Numbers da Supertroco">
+                            </div>
+                            <div class="carousel-item">
+                                <img id="bannerImagequatro"  src="./img/quatro.jpg" class="d-block w-100" alt="Banners com os Big Numbers da Supertroco">
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>       
+
+                <div class="row text-center mt-4">
+                    <div class="col">
+                        <h1 class="mt-2">Impulsione seu negócio com a Super Troco</h1>
+                    </div>        
+                </div>
+
+                <div class="row text-center">
+                    <div class="col-xs-12">
+                        <p class="fontparagrafo">Bem-vindo ao Super Troco, 
+                            o programa de pontos com sorteio que mais cresce no Brasil!
+                            <br><br>
+                            Com Super Troco, você gera receita e otimiza a operação 
+                            do seu negócio tendo zero investimento e zero custo 
+                            de manutenção; além de motivar seus colaboradores 
+                            trazendo benefícios tanto para a sua equipe quanto 
+                            para os seus clientes. <br><br>Presente na maior rede 
+                            brasileira de supermercados, na 3a maior rede de farmácias 
+                            do país e em importantes clientes de varejo no Brasil, 
+                            temos o propósito de transformar vidas, gerar valor 
+                            para sociedade e ainda crescer nossas iniciativas ESG,
+                            em especial a destinação de parte de nossa receita para projetos sociais. 
+                            <br><br>
+                            Resgate seu prêmio e viva a experiência Super Troco; 
+                            acumule pontos para trocar por serviços e descontos direto no 
+                            nosso site e participe de um sorteio com seu número da sorte 
+                            para concorrer até R$ 500 mil*. </p>
+                    </div>
+                </div>
+
+                <div class="row mb-1">
+                    <div class="col-12 col-md-2"></div>          
+                    <div class="col-12 col-md">
+                        <h1 id="paddingleft" class="w-75">Nosso time 
+                            dedica-se diariamente a oferecer o 
+                            melhor para todos os nossos clientes 
+                            e parceiros, reforçando o nosso propósito de transformar vidas.
+                        </h1>
+                    </div>
+
+                    <div class="col-12 col-md">
+                        <img class="img-fluid" src="./img/usaresta.png">
+                    </div>
+                    <div class="col-12 col-md-2"></div>
+                </div>        
+    
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="espacamento">
+                            <h1 id="transformando" class="text-center">Transformando experiências e impulsionando resultados para o varejo</h1>
+                            <br><br>
+                            <video id="videoo" width="100%" height="420" autoplay loop>
+                                <source src="./img/super.mp4" type="video/mp4">                  
+                            </video>
+                        </div>
+                    </div>
+                </div>       
+                
+                <div class="row">
+                    <h2 class="text-center">Cadastre-se agora e resgate 
+                        1.000 pontos <strong style="color: green;font-weight: 700;">Super Troco</strong>.<br>Você, automaticamente, estará concorrendo a até R$ 500 mil*</h2>
+                </div>
+                
+                <br>
+
+                <div class="row">
+                    <div id="sumirmobile" class="col-4"></div>
+                    <div class="col">
+                        <input id="cpfInput" class="w-50" placeholder="   Informe seu cpf"><br>
+                        <span id="spancpfpreenchimento"></span>
+                    </div>
+                </div>           
+                
+                <br>
+
+                <div class="row">
+                    <div id="sumirmobile" class="col-4"></div>
+                    <div class="col">
+                    <input id="codigoInput" class="w-50" placeholder="   Insira o número do cupom"><br>
+                    <span id="spancodigopreenchimento"></span>
+                </div>
+
+                <br><br><br>   
+
+                <div class="row mt-3 mb-5">
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col">
+                        <button id="btnbtn" type="button" onclick="cadastrarUsuario()" class="w-50 btn btncadastrar">CADASTRAR</button>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+
+                <br><br><br>
+
+                <div class="row justify-content-center">
+                    <img class="img-fluid w-25 logofooter" src="./img/st.png">
+                    <footer>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/supertroco.oficial/" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.youtube.com/@supertroco" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <a href="https://www.instagram.com/supertroco" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/company/super-troco/mycompany/?viewAsMember=true" target="_blank"><i class="fab fa-linkedin"></i></a>                    
+                        </div>
+                        <p>&copy;*Sorteios realizados através de Título 
+                            de Capitalização de pagamento único da 
+                            modalidade incentivo emitido pela 
+                            ICATU CAPITALIZAÇÃO S/A, CNPJ/MF nº 74.267.170/0001-73, 
+                            Processo SUSEP nº 15414.901825/2019-77. 
+                            Após a realização do sorteio, 
+                            seu prêmio estará disponível para 
+                            pagamento pelo prazo prescricional 
+                            em vigor, o qual, atualmente é de 
+                            5 anos, conforme previsto no Código 
+                            Civil de 2002. SAC Promotora 0800 602 
+                            8042. Ouvidoria Icatu Seguros 0800 286 0047. 
+                            Para mais informações consulte as condições 
+                            gerais, regulamentos e as características 
+                            essenciais em <a href="https://www.supertroco.com.br">www.supertroco.com.br</a>. Cada 
+                            número de cupom para resgate de mil pontos é 
+                            de uso exclusivo por CPF. Cada número de cupom para resgate de mil pontos é de uso único por CPF.</a></p>
+                    </footer>        
+                </div>
+
+            <!--FECHA O CONTAINER FLUID-->    
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        </body>
+</html>
+
+
+
+
